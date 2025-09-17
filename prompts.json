@@ -32,7 +32,7 @@
     "prompt": "生成一个女孩cosplay这张插画的照片，背景设置在Comiket"
   },
   {
-    "title": "多图上传 Multi-image upload",
-    "prompt": "修复多图上传问题"
+    "title": "Reset camera parameters",
+    "prompt": "RAW-ISO 100 - F28-1/200 24mm setting"
   }
 ]
