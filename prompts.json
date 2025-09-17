@@ -6,5 +6,33 @@
   {
     "title": "pencil-sketch",
     "prompt": "Convert this photo into a detailed and realistic pencil sketch. The final image should look hand-drawn by a skilled artist, with clear graphite texture, shading, and cross-hatching. The background should be clean white, like a piece of paper. Use only shades of grey, black, and white."
+  },
+  {
+    "title": "照片变手办 photo to figure",
+    "prompt": "将这张照片变成角色手办。在它后面放置一个印有角色图像的盒子，盒子上有一台电脑显示Blender建模过程。在盒子前面添加一个圆形塑料底座，角色手办站在上面。如果可能的话，将场景设置在室内"
+  },
+  {
+    "title":"Isolate 3D models 分离出3D建筑/制作等距模型 ",
+    "prompt": "将图像制作成白天和等距视图[仅限建筑]"
+  },
+  {
+    "title": "不同时代的自己 Myself in different eras",
+    "prompt": "将角色的风格改为[1970]年代的经典[男性]风格,添加[长卷发]，[长胡子]，将背景改为标志性的[加州夏季风景],不要改变角色的面部"
+  },
+  {
+    "title": "跨视角图像生成 Cross-view",
+    "prompt": "将照片转换为俯视角度并标记摄影师的位置"
+  },
+  {
+    "title": "定制人物贴纸 Character stickers",
+    "prompt": "帮我将角色变成类似图2的白色轮廓贴纸。角色需要转换成网页插画风格，并添加一个描述图1的俏皮白色轮廓短语"
+  },
+  {
+    "title": "动漫转真人Coser Anime to real-life cosplayer",
+    "prompt": "生成一个女孩cosplay这张插画的照片，背景设置在Comiket"
+  },
+  {
+    "title": "多图上传 Multi-image upload",
+    "prompt": "修复多图上传问题"
   }
 ]
