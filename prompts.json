@@ -1,15 +1,7 @@
 [
   {
-    "title": "Cute Banana",
-    "prompt": "A cute yellow banana smiling in a tropical jungle, highly detailed, vibrant colors"
-  },
-  {
-    "title": "Banana Warrior",
-    "prompt": "A fierce banana warrior with armor made of peels, epic fantasy style, dramatic lighting"
-  },
-  {
-    "title": "Abstract Banana",
-    "prompt": "An abstract representation of a banana in surreal art, melting forms, Picasso-inspired"
+    "title": "ai-facial-fusion",
+    "prompt": "CRITICAL TASK: Photorealistic 50/50 Face Fusion. Your goal is to merge the two provided faces into a single, new, and believable person. Do not simply copy one face or the other. You must create a perfectly balanced, 50/50 blend of their key features (eyes, nose, mouth, jawline). The final output must be a seamless, high-quality photograph of this new individual, with no text or artifacts."
   },
   {
     "title": "pencil-sketch",

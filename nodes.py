@@ -65,14 +65,60 @@ class FrankApiKeyNode:
         return (key,)
 
 
+# 修改: 图片列表收集节点
+class ImageListCollectorNode:
+    @classmethod
+    def INPUT_TYPES(s):
+        # 定义一个必需的图片输入，和两个可选的图片输入
+        return {
+            "required": {
+                "image_1": ("IMAGE",), # 至少需要连接一张图片
+            },
+            "optional": {
+                "image_2": ("IMAGE",),
+                "image_3": ("IMAGE",),
+            }
+        }
+
+    RETURN_TYPES = ("IMAGE_LIST",) # 自定义一个返回类型，方便连接
+    RETURN_NAMES = ("image_list",)
+    FUNCTION = "collect_images"
+    CATEGORY = "FrankAI"
+
+    # 使用显式参数，这样可以直接检查是否为None
+    def collect_images(self, image_1, image_2=None, image_3=None):
+        image_list = []
+        
+        # image_1 是必需的，所以它总会有一个值 (通常是一个batch的tensor)
+        for img_tensor in image_1:
+            image_list.append(img_tensor.unsqueeze(0)) # 保持batch维度为1
+
+        # 检查并添加可选图片
+        if image_2 is not None:
+            for img_tensor in image_2:
+                image_list.append(img_tensor.unsqueeze(0))
+        
+        if image_3 is not None:
+            for img_tensor in image_3:
+                image_list.append(img_tensor.unsqueeze(0))
+        
+        # 这里不需要额外的长度检查，因为 required/optional 已经强制了至少一个，
+        # 且我们只收集了最多3个输入。
+        
+        return (image_list,)
+
+
+
+# 修改: BananaMainNode 以接收图片列表并进行数量验证
 class BananaMainNode:
     @classmethod
     def INPUT_TYPES(s):
         return {
             "required": {
-                "images": ("IMAGE",),
-                "key": ("STRING", {"forceInput": True}),  # 只连接点，无输入框
-                "prompt": ("STRING", {"forceInput": True}),  # 只连接点，无输入框
+                # 接收我们自定义的 "IMAGE_LIST" 类型
+                "images": ("IMAGE_LIST",), 
+                "key": ("STRING", {"forceInput": True}),
+                "prompt": ("STRING", {"forceInput": True}),
             }
         }
 
@@ -81,44 +127,63 @@ class BananaMainNode:
     FUNCTION = "execute"
     CATEGORY = "FrankAI"
 
+    # execute方法的 images 参数现在会接收一个Python list
     def execute(self, images, key, prompt):
-        # 检查必需输入
+        # 错误返回的空tensor
+        empty_tensor = torch.zeros((1, 512, 512, 3))
+
         if not key:
-            empty_tensor = torch.zeros((1, 512, 512, 3))
-            return (empty_tensor, "错误: 未提供API Key，请连接API Key节点")
+            return (empty_tensor, "Error: No API Key provided, please connect to the API Key node")
         if not prompt:
-            empty_tensor = torch.zeros((1, 512, 512, 3))
-            return (empty_tensor, "错误: 未提供Prompt，请连接Prompt Selector节点")
+            return (empty_tensor, "Error: No Prompt provided, please connect a Prompt Selector node")
 
-        # 处理图像
-        if len(images) == 0:
-            raise ValueError("无输入图像")
-        image_tensor = images[0].cpu().numpy()
-        image_np = (image_tensor * 255).astype(np.uint8)
-        if len(image_np.shape) == 3:
-            if image_np.shape[2] == 3:  # RGB
-                pil_image = Image.fromarray(image_np)
-            elif image_np.shape[2] == 4:  # RGBA
-                pil_image = Image.fromarray(image_np[:, :, :3])
+        # images 现在是一个 list of tensors
+        if not isinstance(images, list):
+            return (empty_tensor, "Error: Image input is not a valid list.")
+        
+        # 关键修改：检查图片数量
+        num_images = len(images)
+        if num_images < 1:
+            return (empty_tensor, "ERROR: BananaMainNode requires at least one input image.")
+        if num_images > 3:
+            return (empty_tensor, f"ERROR: BananaMainNode expects at most 3 images, but received {num_images}.")
+
+        imgList_for_api = []
+        # 遍历列表中的每一个图片tensor
+        for i, image_tensor_batch in enumerate(images):
+            if image_tensor_batch is None:
+                raise ValueError(f"The {i+1}th image in the list is empty.")
+
+            # 通常列表里的每个元素是一个 (1, H, W, C) 的tensor
+            # 提取实际的 (H, W, C) tensor
+            image_tensor = image_tensor_batch[0] 
+            image_np = (image_tensor.cpu().numpy() * 255).astype(np.uint8)
+            
+            if len(image_np.shape) == 3:
+                if image_np.shape[2] == 3:  # RGB
+                    pil_image = Image.fromarray(image_np)
+                elif image_np.shape[2] == 4:  # RGBA
+                    pil_image = Image.fromarray(image_np[:, :, :3])
+                else:
+                    return (empty_tensor, f"The image{i+1} format is not supported (RGB or RGBA is expected)")
             else:
-                raise ValueError("图像格式不支持（期望RGB或RGBA）")
-        else:
-            raise ValueError("图像维度不支持")
+                return (empty_tensor, f"The image{i+1} dimension is not supported")
 
-        # 转换为bytes
-        img_buffer = io.BytesIO()
-        pil_image.save(img_buffer, format='PNG')
-        img_bytes = img_buffer.getvalue()
+            img_buffer = io.BytesIO()
+            pil_image.save(img_buffer, format='PNG')
+            img_bytes = img_buffer.getvalue()
+            
+            # 关键修改: 所有图片都使用 'images' 作为字段名
+            imgList_for_api.append(('images', (f"image_{i}.png", img_bytes, 'image/png')))
 
         # 准备表单数据
-        files = {'images': ('image.png', img_bytes, 'image/png')}
+        files = imgList_for_api
         data = {'key': key, 'prompt': prompt}
 
-        # 发送POST请求
         try:
             response = requests.post(
                 "https://yinothing.com/api/google/banana",
-                files=files,
+                files=files, # files 现在包含了所有图片
                 data=data,
                 timeout=30
             )
@@ -130,30 +195,22 @@ class BananaMainNode:
             if not image_b64:
                 raise ValueError("API响应中无image_base64字段")
             
-            # 【关键修改】处理Base64字符串
-            # 1. 检查并移除常见的数据URI前缀
             if ',' in image_b64:
-                # 只分割一次，并取逗号后面的部分
                 image_b64 = image_b64.split(',', 1)[1]
             
-            # 2. (可选但推荐) 补全Base64填充
             missing_padding = len(image_b64) % 4
             if missing_padding != 0:
                 image_b64 += '=' * (4 - missing_padding)
 
-            # 解码base64
             image_data = base64.b64decode(image_b64)
             pil_output = Image.open(io.BytesIO(image_data)).convert("RGB")
 
-            # 转换为tensor
             output_np = np.array(pil_output).astype(np.float32) / 255.0
             output_tensor = torch.from_numpy(output_np).unsqueeze(0)
 
             return (output_tensor, text)
 
         except requests.exceptions.RequestException as e:
-            empty_tensor = torch.zeros((1, 512, 512, 3))
-            # 尝试获取API返回的message字段
             error_message = "Error: "
             try:
                 if response.status_code:
@@ -161,9 +218,11 @@ class BananaMainNode:
                     if response.text:
                         error_data = response.json()
                         message = error_data.get("message", str(e))
-                        if type(message) is dict:
+                        if type(message) is dict and "status" in message and "name" in message:
                             error_message = f"Error: HTTP {message['status']} - "
                             message = message['name'] 
+                        elif type(message) is dict:
+                            message = str(message)
                         error_message += message
                     else:
                         error_message += str(e)
