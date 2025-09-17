@@ -1,0 +1,468 @@
+{
+  "id": "016b4b53-c283-4dca-8822-cd23aa58c02e",
+  "revision": 0,
+  "last_node_id": 20,
+  "last_link_id": 35,
+  "nodes": [
+    {
+      "id": 20,
+      "type": "ImageListCollector",
+      "pos": [
+        1420,
+        1760
+      ],
+      "size": [
+        163.61679077148438,
+        66
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_1",
+          "type": "IMAGE",
+          "link": 32
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 33
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image_list",
+          "type": "IMAGE_LIST",
+          "links": [
+            34
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "fr0nky0ng/ComfyUI-frankAI-banana",
+        "ver": "d8d613b5badcf536e0c2c8de02bed764930e8a79",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "ImageListCollector"
+      }
+    },
+    {
+      "id": 12,
+      "type": "GoogleApiKeyNode",
+      "pos": [
+        1420,
+        1630
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "key",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "aux_id": "fr0nky0ng/ComfyUI-frankAI-banana",
+        "ver": "38a19a74b79577cc63b6db2131ca8de1687c5386",
+        "Node name for S&R": "GoogleApiKeyNode",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "lkjlj"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "BananaMainNode",
+      "pos": [
+        1733.708984375,
+        1792.875732421875
+      ],
+      "size": [
+        212.66464233398438,
+        66
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE_LIST",
+          "link": 34
+        },
+        {
+          "name": "key",
+          "type": "STRING",
+          "link": 35
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "fr0nky0ng/ComfyUI-frankAI-banana",
+        "ver": "38a19a74b79577cc63b6db2131ca8de1687c5386",
+        "Node name for S&R": "BananaMainNode",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "FrankApiKeyNode",
+      "pos": [
+        1412.5509033203125,
+        1879.2559814453125
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "key",
+          "type": "STRING",
+          "links": [
+            35
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "fr0nky0ng/ComfyUI-frankAI-banana",
+        "ver": "38a19a74b79577cc63b6db2131ca8de1687c5386",
+        "Node name for S&R": "FrankApiKeyNode",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "dsdfsfs"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "BananaPromptSelector",
+      "pos": [
+        1400,
+        2000
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "fr0nky0ng/ComfyUI-frankAI-banana",
+        "ver": "38a19a74b79577cc63b6db2131ca8de1687c5386",
+        "Node name for S&R": "BananaPromptSelector",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ai-facial-fusion",
+        "让图1女子穿戴上图2的衣服"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        1079.040771484375,
+        1623.80615234375
+      ],
+      "size": [
+        274.080078125,
+        314.0001220703125
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            32
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.59",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI_temp_lmryl_00001_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        1080,
+        1990
+      ],
+      "size": [
+        274.080078125,
+        314.0001220703125
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            11,
+            15,
+            22,
+            33
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.59",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "style-variation-2-2025-09-16T02-20-47-772Z.png",
+        "image"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "PreviewImage",
+      "pos": [
+        2020,
+        1590
+      ],
+      "size": [
+        450,
+        410
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.59",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "ShowText|pysssss",
+      "pos": [
+        1866.4542236328125,
+        2096.841796875
+      ],
+      "size": [
+        450,
+        370
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-custom-scripts",
+        "ver": "1.2.5",
+        "Node name for S&R": "ShowText|pysssss",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "好的，这是将图1女子穿戴图2衣服的效果：\n"
+      ]
+    }
+  ],
+  "links": [
+    [
+      3,
+      6,
+      0,
+      9,
+      2,
+      "STRING"
+    ],
+    [
+      5,
+      9,
+      1,
+      7,
+      0,
+      "STRING"
+    ],
+    [
+      6,
+      9,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ],
+    [
+      11,
+      14,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      14,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      22,
+      14,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      32,
+      11,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      33,
+      14,
+      0,
+      20,
+      1,
+      "IMAGE"
+    ],
+    [
+      34,
+      20,
+      0,
+      9,
+      0,
+      "IMAGE_LIST"
+    ],
+    [
+      35,
+      8,
+      0,
+      9,
+      1,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ue_links": [],
+    "ds": {
+      "scale": 0.5141981810458444,
+      "offset": [
+        -592.0755680249329,
+        -1298.4911606686533
+      ]
+    },
+    "links_added_by_ue": [],
+    "frontendVersion": "1.26.11",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
