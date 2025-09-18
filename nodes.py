@@ -191,9 +191,11 @@ class BananaMainNode:
             result = response.json()
 
             image_b64 = result.get("imageUrls")[0]
-            text = result.get("text", "")
+            usageMetadata = result.get("usageMetadata", {})
+            text = f'A total of {usageMetadata.get("totalTokenCount", "")} tokens are used.'
+
             if not image_b64:
-                raise ValueError("API响应中无image_base64字段")
+                raise ValueError("There is no image_base64 field in the API response")
             
             if ',' in image_b64:
                 image_b64 = image_b64.split(',', 1)[1]
